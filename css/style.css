@@ -741,43 +741,43 @@ nav a:hover{
 ========================= */
 
 /* Base para todas as formas geométricas */
+/* =========================
+   FLUXOGRAMA (ESTILO DO SITE + NORMA IFG)
+========================= */
+
 .etapa {
-    background-color: #1a202c; /* Fundo escuro */
+    background-color: #151515; /* Aquele fundo escuro elegante que você já usava */
     color: #ffffff;
-    border: 2px solid var(--green); /* Contorno verde completo fechando a forma */
     padding: 12px 24px;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    font-weight: 600;
-    font-size: 0.9rem;
+    font-weight: 500;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-/* 1. Terminador (Início e Fim) -> Formato de Pílula */
-.etapa.terminador {
-    border-radius: 50px; 
-}
-
-/* 2. Processo (Atividades) -> Retângulo */
+/* 1. Processo (Atividades) -> Retângulo da norma */
 .etapa.processo {
-    border-radius: 4px; /* Retângulo padrão da norma */
+    border-radius: 6px; 
+    border-left: 4px solid var(--green); /* O seu detalhe verde lateral original volta aqui! */
 }
 
-/* Setas */
-.seta {
+/* 2. Terminador (Início e Fim) -> Formato de Pílula da norma */
+.etapa.terminador {
+    border-radius: 50px;
+    /* Como uma borda grossa só na esquerda fica esquisita em uma forma redonda, 
+       colocamos um contorno verde completo para destacar o Início e o Fim */
+    border: 2px solid var(--green); 
     color: var(--green);
+    font-weight: 700;
+}
+
+/* Setas de ligação */
+.seta {
+    color: var(--green); /* As setas verdes originais estão salvas */
     font-size: 1.5rem;
     margin: 0 10px;
-}
-
-.seta{
-
-    font-size:1.8rem;
-
-    color:var(--green);
-
 }
 
 /* =========================
