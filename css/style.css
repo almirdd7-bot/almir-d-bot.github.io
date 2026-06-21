@@ -323,16 +323,15 @@ nav a:hover{
    CARDS
 ========================= */
 
-.cards{
-
-    display:grid;
-
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-
-    gap:25px;
-
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+    align-items: flex-start;
 }
-
+.card.expansivel.ativo {
+    grid-column: 1 / -1; /* Ocupa a linha inteira da grelha (grid) */
+}
 .card{
 
     background:#111111;
@@ -1218,6 +1217,7 @@ nav a.active{
     overflow: hidden;
     opacity: 0;
     transition: all 0.4s ease;
+    overflow-x: auto; /* Adicione apenas esta linha para ativar o scroll na tabela */
 }
 
 .card.expansivel.ativo .detalhe {
