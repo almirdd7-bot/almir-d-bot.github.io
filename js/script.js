@@ -300,3 +300,12 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+// =====================================
+// CARDS EXPANSÍVEIS (FERRAMENTAS)
+// =====================================
+document.querySelectorAll(".card.expansivel").forEach(card => {
+    card.addEventListener("click", () => {
+        // Alterna a classe 'ativo' no card clicado
+        card.classList.toggle("ativo");
+    });
+});
