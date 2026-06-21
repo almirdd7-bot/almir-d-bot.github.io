@@ -736,16 +736,40 @@ nav a:hover{
 
 }
 
-.etapa{
+/* =========================
+   FLUXOGRAMA (FORMAS OFICIAIS)
+========================= */
 
-    background:#111;
+/* Base para todas as formas geométricas */
+.etapa {
+    background-color: #1a202c; /* Fundo escuro */
+    color: #ffffff;
+    border: 2px solid var(--green); /* Contorno verde completo fechando a forma */
+    padding: 12px 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
 
-    padding:18px 25px;
+/* 1. Terminador (Início e Fim) -> Formato de Pílula */
+.etapa.terminador {
+    border-radius: 50px; 
+}
 
-    border-left:4px solid var(--green);
+/* 2. Processo (Atividades) -> Retângulo */
+.etapa.processo {
+    border-radius: 4px; /* Retângulo padrão da norma */
+}
 
-    border-radius:10px;
-
+/* Setas */
+.seta {
+    color: var(--green);
+    font-size: 1.5rem;
+    margin: 0 10px;
 }
 
 .seta{
