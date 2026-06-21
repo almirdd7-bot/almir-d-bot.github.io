@@ -3,325 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualização To-Be: Layout Otimizado Final</title>
+    <title>Modelo 3D - To-Be (Layout Final com Fluxo Otimizado)</title>
     <style>
-        * { margin: 0; padding: 0; }
-        body { 
-            overflow: hidden; 
-            background-color: #1a1a1a; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        #canvas { display: block; width: 100vw; height: 100vh; }
-        #info { 
-            position: absolute; 
-            top: 20px; 
-            left: 20px; 
-            background: rgba(0, 0, 0, 0.8); 
-            color: #fff; 
-            padding: 20px; 
-            border-radius: 10px; 
-            max-width: 400px;
-            border-left: 4px solid #4299e1;
-            z-index: 100;
-        }
-        #info h2 { margin-bottom: 10px; font-size: 1.3rem; color: #4299e1; }
-        #info p { font-size: 0.9rem; line-height: 1.5; color: #ddd; margin-bottom: 8px; }
-        .destaque { color: #f6e05e; font-weight: bold; }
-        .melhoria { color: #68d391; }
-        
-        #controls {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(0, 0, 0, 0.85);
-            color: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            border: 1px solid #4299e1;
-        }
-        
-        #legend {
-            position: absolute;
-            right: 20px;
-            top: 20px;
-            background: rgba(0, 0, 0, 0.9);
-            color: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            max-width: 250px;
-            border: 1px solid #ed8936;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-        .legend-item { 
-            display: flex; 
-            align-items: center; 
-            margin-bottom: 8px; 
-            font-size: 0.85rem;
-        }
-        .legend-color { 
-            width: 16px; 
-            height: 16px; 
-            margin-right: 10px; 
-            border-radius: 3px;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-        .legend-title {
-            font-weight: bold;
-            color: #4299e1;
-            margin-top: 12px;
-            margin-bottom: 6px;
-            font-size: 0.9rem;
-        }
+        body { margin: 0; overflow: hidden; background-color: #f0f0f0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        #info { position: absolute; top: 15px; width: 100%; text-align: center; pointer-events: none; color: #2d3748; }
+        #info h3 { margin: 0; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px;}
+        #info p { margin: 5px 0 0 0; font-size: 0.9rem; color: #4a5568;}
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 </head>
 <body>
     <div id="info">
-        <h2>📦 To-Be: Estado Final Otimizado</h2>
-        <p><span class="destaque">Prateleira Amarela</span> em 90° com a Roxa</p>
-        <p><span class="melhoria">✓</span> Corredor central aberto e fluido</p>
-        <p><span class="melhoria">✓</span> Freezers reorganizados (parede direita)</p>
-        <p><span class="melhoria">✓</span> Layout em "L" para máx. aproveitamento</p>
-        <p><span class="melhoria">✓</span> Controle de pragas (5 ratoeiras)</p>
-        <p><span class="melhoria">✓</span> Câmara fria unificada</p>
-        <p style="margin-top: 15px; font-size: 0.8rem; color: #999;">Rotate: mouse | Zoom: scroll | Pan: direita</p>
+        <h3>Planta 3D: Estado Futuro (To-Be)</h3>
+        <p>Prateleira amarela ancorada em 90° com a roxa e corredor central aberto</p>
     </div>
-
-    <div id="legend">
-        <div class="legend-title">🏗️ Estrutura</div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #1a202c;"></div>
-            <span>Piso e Estrutura</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #d2b48c;"></div>
-            <span>Banheiro</span>
-        </div>
-
-        <div class="legend-title">❄️ Frio</div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #ed8936;"></div>
-            <span>Câmara Fria</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #b83280;"></div>
-            <span>Refrigerador Rosa</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #90cdf4;"></div>
-            <span>Freezer Gelo</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #e53e3e;"></div>
-            <span>Freezer Carnes</span>
-        </div>
-
-        <div class="legend-title">📦 Prateleiras</div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #f6e05e;"></div>
-            <span>Prat. Amarela (90°)</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #805ad5;"></div>
-            <span>Prat. Roxa</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #4a5568;"></div>
-            <span>Prat. Industrial (L)</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #4fd1c5;"></div>
-            <span>Prat. Suspensa</span>
-        </div>
-
-        <div class="legend-title">🛒 Mobiliário</div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #a0aec0;"></div>
-            <span>Caixa</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #ed8936;"></div>
-            <span>Balcões Vazados</span>
-        </div>
-
-        <div class="legend-title">🐭 Controle</div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #1a202c;"></div>
-            <span>Ratoeiras (5x)</span>
-        </div>
-    </div>
-
-    <div id="controls">
-        <strong>🎮 Controles:</strong><br>
-        Clique + Arraste para rotacionar<br>
-        Scroll para zoom<br>
-        Clique direito + Arraste para pan
-    </div>
-
-    <canvas id="canvas"></canvas>
-
+    
     <script>
-        // ===== SETUP THREE.JS =====
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x2d3748);
-        scene.fog = new THREE.Fog(0x2d3748, 40, 60);
-
-        const canvas = document.getElementById('canvas');
+        scene.background = new THREE.Color(0xe2e8f0);
         const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFShadowShadowMap;
+        document.body.appendChild(renderer.domElement);
 
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
-        camera.position.set(12, 22, 18);
-        controls.target.set(7, 0.5, 6);
+        camera.position.set(10, 25, 18); 
+        controls.target.set(7.5, 0, 7);  
         controls.enableDamping = true;
         controls.dampingFactor = 0.05;
-        controls.autoRotate = false;
 
-        // ===== ILUMINAÇÃO =====
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
         scene.add(ambientLight);
-
-        const dirLight = new THREE.DirectionalLight(0xffffff, 0.7);
-        dirLight.position.set(15, 25, 12);
-        dirLight.castShadow = true;
-        dirLight.shadow.mapSize.width = 2048;
-        dirLight.shadow.mapSize.height = 2048;
-        dirLight.shadow.camera.near = 0.5;
-        dirLight.shadow.camera.far = 50;
-        dirLight.shadow.camera.left = -20;
-        dirLight.shadow.camera.right = 20;
-        dirLight.shadow.camera.top = 30;
-        dirLight.shadow.camera.bottom = -10;
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.4);
+        dirLight.position.set(10, 20, 15);
         scene.add(dirLight);
 
-        // Light accent
-        const pointLight = new THREE.PointLight(0xed8936, 0.3);
-        pointLight.position.set(4, 3, 3);
-        scene.add(pointLight);
-
-        // ===== GRID =====
-        const gridHelper = new THREE.GridHelper(20, 20, 0x4a5568, 0x2d3748);
-        gridHelper.position.y = -0.01;
+        const gridHelper = new THREE.GridHelper(20, 20, 0xa0aec0, 0xcbd5e0);
+        gridHelper.position.set(7.5, -0.01, 5);
         scene.add(gridHelper);
 
-        // ===== MATERIAIS =====
-        const materials = {
-            piso: new THREE.MeshLambertMaterial({ color: 0x1a202c }),
-            parede: new THREE.MeshLambertMaterial({ color: 0x2d3748 }),
-            banheiro: new THREE.MeshLambertMaterial({ color: 0xd2b48c }),
-            camaraFria: new THREE.MeshPhongMaterial({ color: 0xed8936, shininess: 20 }),
-            refrig: new THREE.MeshPhongMaterial({ color: 0xb83280, shininess: 25 }),
-            freezerGelo: new THREE.MeshPhongMaterial({ color: 0x90cdf4, shininess: 30 }),
-            freezerCarnes: new THREE.MeshPhongMaterial({ color: 0xe53e3e, shininess: 20 }),
-            pratAmarela: new THREE.MeshPhongMaterial({ color: 0xf6e05e, shininess: 15 }),
-            pratRoxa: new THREE.MeshPhongMaterial({ color: 0x805ad5, shininess: 15 }),
-            pratIndustrial: new THREE.MeshLambertMaterial({ color: 0x4a5568 }),
-            pratSuspensa: new THREE.MeshLambertMaterial({ color: 0x4fd1c5 }),
-            caixa: new THREE.MeshPhongMaterial({ color: 0xa0aec0, shininess: 10 }),
-            balcao: new THREE.MeshPhongMaterial({ color: 0xed8936, shininess: 15 }),
-            ratoeira: new THREE.MeshLambertMaterial({ color: 0x1a202c })
-        };
-
-        function construirVolume(x, z, largX, profZ, altura, material, baseY = 0) {
+        function construirVolume(x, z, largX, profZ, altura, corHex, opacidade = 1.0, baseY = 0) {
             const geometry = new THREE.BoxGeometry(largX, altura, profZ);
-            const mesh = new THREE.Mesh(geometry, material);
-            mesh.position.set(x + largX/2, baseY + altura/2, z + profZ/2);
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
+            const material = new THREE.MeshLambertMaterial({ 
+                color: corHex, 
+                transparent: opacidade < 1.0, 
+                opacity: opacidade 
+            });
+            const bloco = new THREE.Mesh(geometry, material);
+            bloco.position.set(x + largX/2, baseY + altura/2, z + profZ/2);
             
             const edges = new THREE.EdgesGeometry(geometry);
-            const lines = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x1a202c, linewidth: 1 }));
-            lines.position.copy(mesh.position);
+            const linhas = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x1a202c, linewidth: 1 }));
+            linhas.position.copy(bloco.position);
             
-            scene.add(mesh);
-            scene.add(lines);
-            return mesh;
+            scene.add(bloco);
+            scene.add(linhas);
         }
 
-        // ===== ESTRUTURA =====
-        // Piso
-        construirVolume(0, 0, 16, 12, 0.05, materials.piso);
+        // --- 1. ESTRUTURA DO PRÉDIO ---
+        construirVolume(0, 5, 14.5, 7.0, 3.0, 0x4299e1, 0.05); // Vendas 
+        construirVolume(14.5, 0, 1.5, 12.0, 3.0, 0x48bb78, 0.3); // Corredor
+        construirVolume(9.5, 0, 4, 2, 3.0, 0xd2b48c, 0.6); // Banheiro
         
-        // Paredes (invisíveis mas com contorno)
-        construirVolume(0, 5, 14.5, 7, 3, new THREE.MeshLambertMaterial({ color: 0x2d3748, transparent: true, opacity: 0.02 }));
-        construirVolume(14.5, 0, 1.5, 12, 3, new THREE.MeshLambertMaterial({ color: 0x2d3748, transparent: true, opacity: 0.05 }));
-        construirVolume(9.5, 0, 4, 2, 3, materials.banheiro);
+        // --- A LINHA DE FRIO ---
+        construirVolume(0, 3.0, 4.5, 3.5, 2.8, 0xed8936); // Camara fria
+        construirVolume(4.5, 5.0, 7.0, 1.5, 2.2, 0xb83280); // Refrigerador rosa
 
-        // ===== LINHA DE FRIO =====
-        construirVolume(0, 3, 4.5, 3.5, 2.8, materials.camaraFria);
-        construirVolume(4.5, 5, 7, 1.5, 2.2, materials.refrig);
+        // --- 2. O NOVO ESTOQUE ORGANIZADO (EM L) ---
+        construirVolume(0.5, 0.2, 4.0, 0.8, 2.5, 0x4a5568); // Prateleira 1 (Parede do Fundo)
+        construirVolume(0.5, 1.0, 0.8, 3.0, 2.5, 0x4a5568); // Prateleira 2 (Parede Lateral Esquerda)
 
-        // ===== PAREDE DIREITA =====
-        construirVolume(13.5, 5.0, 1.0, 1.35, 2.55, materials.freezerGelo);
-        construirVolume(13.5, 6.35, 1.0, 2.0, 2.0, materials.freezerCarnes);
-        construirVolume(13.5, 8.35, 1.0, 3.15, 2.0, materials.pratRoxa);
+        // --- 3. CONTROLE DE PRAGAS (5 RATOEIRAS) ---
+        construirVolume(0.2, 0.2, 0.2, 0.3, 0.1, 0x1a202c); 
+        construirVolume(9.0, 1.8, 0.2, 0.3, 0.1, 0x1a202c); 
+        construirVolume(4.6, 6.6, 0.3, 0.2, 0.1, 0x1a202c); 
+        construirVolume(13.0, 4.8, 0.2, 0.3, 0.1, 0x1a202c); 
+        construirVolume(1.5, 11.6, 0.3, 0.2, 0.1, 0x1a202c); 
 
-        // ===== PRATELEIRAS INDUSTRIAIS (L) =====
-        construirVolume(0.5, 0.2, 4.0, 0.8, 2.5, materials.pratIndustrial);
-        construirVolume(0.5, 1.0, 0.8, 3.0, 2.5, materials.pratIndustrial);
+        // --- 4. PAREDE DIREITA ---
+        construirVolume(13.5, 5.0, 1.0, 1.35, 2.55, 0x90cdf4); // Freezer Gelo
+        construirVolume(13.5, 6.35, 1.0, 2.0, 2.0, 0xe53e3e); // Freezer Carnes
+        construirVolume(13.5, 8.35, 1.0, 3.15, 2.0, 0x805ad5); // Prateleira Roxa
 
-        // ===== PRATELEIRA AMARELA (90°) =====
-        construirVolume(6.0, 11.05, 7.5, 0.4, 1.5, materials.pratAmarela);
-
-        // ===== BALCÕES VAZADOS =====
-        construirVolume(8.5, 9.05, 0.8, 2.0, 1.5, materials.balcao);
-        construirVolume(10.5, 9.05, 0.8, 2.0, 1.5, materials.balcao);
-
-        // ===== CAIXA =====
-        construirVolume(0, 9, 4, 1, 1.1, materials.caixa);
-
-        // ===== PRATELEIRAS SUSPENSAS =====
-        construirVolume(0, 6.55, 0.35, 5.2, 1.25, materials.pratSuspensa, 1.2);
-        construirVolume(0, 6.55, 0.5, 5.2, 0.08, materials.pratSuspensa, 1.2);
-        construirVolume(0, 6.55, 0.5, 5.2, 0.08, materials.pratSuspensa, 1.6);
-        construirVolume(0, 6.55, 0.5, 5.2, 0.08, materials.pratSuspensa, 2.0);
-        construirVolume(0, 6.55, 0.5, 5.2, 0.08, materials.pratSuspensa, 2.4);
+        // --- 5. A NOVA FRENTE DE LOJA OTIMIZADA ---
+        construirVolume(0, 9.0, 4.0, 1.0, 1.1, 0xa0aec0); // Caixa recuado (Cinza)
         
-        // Suportes das prateleiras
-        construirVolume(0, 6.55, 0.5, 0.07, 1.25, materials.pratSuspensa, 1.2);
-        construirVolume(0, 8.25, 0.5, 0.07, 1.25, materials.pratSuspensa, 1.2);
-        construirVolume(0, 9.95, 0.5, 0.07, 1.25, materials.pratSuspensa, 1.2);
-        construirVolume(0, 11.68, 0.5, 0.07, 1.25, materials.pratSuspensa, 1.2);
+        // O "L" invertido para trás alinhado à direita do Caixa
+        construirVolume(3.2, 7.0, 0.8, 2.0, 1.5, 0xed8936); 
 
-        // ===== FREEZERS AUXILIARES =====
-        construirVolume(0, 10.95, 1.0, 1.2, 1.0, new THREE.MeshPhongMaterial({ color: 0x68d391, shininess: 25 }));
-        construirVolume(0.45, 6.95, 1.0, 1.5, 1.0, new THREE.MeshPhongMaterial({ color: 0x68d391, shininess: 25 }));
+        // CORREÇÃO FINAL: Prateleira amarela fina encostada na roxa (formando 90 graus)
+        // Deslocada de X=4.0 para X=6.0, encostando exatamente em X=13.5 (início da roxa)
+        construirVolume(6.0, 11.05, 7.5, 0.4, 1.5, 0xf6e05e); 
 
-        // ===== RATOEIRAS (Controle de Pragas) =====
-        const ratoeiraPosicoes = [
-            [0.2, 0.2], [9.0, 1.8], [4.6, 6.6], [13.0, 4.8], [1.5, 11.6]
-        ];
-        ratoeiraPosicoes.forEach(([x, z]) => {
-            construirVolume(x, z, 0.2, 0.3, 0.1, materials.ratoeira);
-        });
+        // Balcões Vazados (Apoiados na amarela)
+        construirVolume(8.5, 9.05, 0.8, 2.0, 1.5, 0xed8936); 
+        construirVolume(10.5, 9.05, 0.8, 2.0, 1.5, 0xed8936); 
 
-        // ===== CANVAS RESPONSIVO =====
+        // --- 6. MOBILIÁRIO ESQUERDO E PRATELEIRAS ---
+        construirVolume(0, 10.95, 1.0, 1.2, 1.0, 0x68d391); // Freezer verde-agua
+        construirVolume(0.45, 6.95, 1.0, 1.5, 1.0, 0x68d391); // Freezer interno
+        
+        // Prateleiras Suspensas
+        construirVolume(0, 6.55, 0.35, 5.2, 1.25, 0x4fd1c5, 0.18, 1.2); 
+        construirVolume(0, 6.55, 0.5, 5.2, 0.08, 0x4fd1c5, 1.0, 1.2);
+        construirVolume(0, 6.55, 0.5, 5.2, 0.08, 0x4fd1c5, 1.0, 1.6);
+        construirVolume(0, 6.55, 0.5, 5.2, 0.08, 0x4fd1c5, 1.0, 2.0);
+        construirVolume(0, 6.55, 0.5, 5.2, 0.08, 0x4fd1c5, 1.0, 2.4);
+        construirVolume(0, 6.55, 0.5, 0.07, 1.25, 0x4fd1c5, 1.0, 1.2);
+        construirVolume(0, 8.25, 0.5, 0.07, 1.25, 0x4fd1c5, 1.0, 1.2);
+        construirVolume(0, 9.95, 0.5, 0.07, 1.25, 0x4fd1c5, 1.0, 1.2);
+        construirVolume(0, 11.68, 0.5, 0.07, 1.25, 0x4fd1c5, 1.0, 1.2);
+
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
-        // ===== ANIMAÇÃO =====
         function animate() {
             requestAnimationFrame(animate);
             controls.update();
             renderer.render(scene, camera);
         }
         animate();
-
-        // Dica: Duplo clique para voltar à câmera padrão
-        window.addEventListener('dblclick', () => {
-            camera.position.set(12, 22, 18);
-            controls.target.set(7, 0.5, 6);
-            controls.update();
-        });
     </script>
 </body>
 </html>

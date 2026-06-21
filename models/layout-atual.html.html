@@ -9,10 +9,6 @@
         #info { position: absolute; top: 15px; width: 100%; text-align: center; pointer-events: none; color: #2d3748; }
         #info h3 { margin: 0; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px;}
         #info p { margin: 5px 0 0 0; font-size: 0.9rem; color: #4a5568;}
-        .legend { position: absolute; bottom: 20px; left: 20px; background: rgba(255, 255, 255, 0.9); padding: 15px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 0.85rem; color: #2d3748; max-width: 250px; max-height: 80vh; overflow-y: auto;}
-        .legend div { margin-bottom: 6px; display: flex; align-items: center;}
-        .legend div:last-child { margin-bottom: 0; }
-        .color-box { width: 14px; height: 14px; display: inline-block; margin-right: 8px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.2);}
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -23,26 +19,6 @@
         <p>Parede direita alinhada: Gelo > Carnes > Roxa</p>
     </div>
     
-    <div class="legend">
-        <div><strong style="margin-bottom: 5px; display: block;">Parede Direita (Nova Ordem):</strong></div>
-        <div><span class="color-box" style="background:#90cdf4;"></span> Freezer Gelo (Reduzido)</div>
-        <div><span class="color-box" style="background:#e53e3e;"></span> Freezer Carnes</div>
-        <div><span class="color-box" style="background:#805ad5;"></span> Prateleira Roxa</div>
-        <div style="margin-top: 10px;"><strong style="margin-bottom: 5px; display: block;">A Parede de Frio:</strong></div>
-        <div><span class="color-box" style="background:#ed8936;"></span> Câmara Fria Unificada</div>
-        <div><span class="color-box" style="background:#b83280;"></span> Refrigerador (Rosa)</div>
-        <div style="margin-top: 10px;"><strong style="margin-bottom: 5px; display: block;">Estrutura:</strong></div>
-        <div><span class="color-box" style="background:rgba(66, 153, 225, 0.1);"></span> Área de Vendas</div>
-        <div><span class="color-box" style="background:#d2b48c;"></span> Banheiro (Bege)</div>
-        <div style="margin-top: 10px;"><strong style="margin-bottom: 5px; display: block;">Estoque (Fundos):</strong></div>
-        <div><span class="color-box" style="background:#63b3ed;"></span> Freezers Horizontais</div>
-        <div><span class="color-box" style="background:#718096;"></span> Caixas/Fardos soltos</div>
-        <div style="margin-top: 10px;"><strong style="margin-bottom: 5px; display: block;">Mobiliário (Frente/Esq):</strong></div>
-        <div><span class="color-box" style="background:#a0aec0;"></span> Caixa / <span class="color-box" style="background:#dd6b20;"></span> Balcão 1</div>
-        <div><span class="color-box" style="background:#f6e05e;"></span> Prat. Amarela</div>
-        <div><span class="color-box" style="background:#4fd1c5;"></span> Prat. Suspensa (Esq)</div>
-    </div>
-
     <script>
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0xe2e8f0);
