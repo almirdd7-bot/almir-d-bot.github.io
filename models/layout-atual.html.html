@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo 3D - As-Is (Alinhamento Parede Direita)</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #f0f0f0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        #info { position: absolute; top: 15px; width: 100%; text-align: center; pointer-events: none; color: #2d3748; }
+        #info h3 { margin: 0; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px;}
+        #info p { margin: 5px 0 0 0; font-size: 0.9rem; color: #4a5568;}
+        .legend { position: absolute; bottom: 20px; left: 20px; background: rgba(255, 255, 255, 0.9); padding: 15px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 0.85rem; color: #2d3748; max-width: 250px; max-height: 80vh; overflow-y: auto;}
+        .legend div { margin-bottom: 6px; display: flex; align-items: center;}
+        .legend div:last-child { margin-bottom: 0; }
+        .color-box { width: 14px; height: 14px; display: inline-block; margin-right: 8px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.2);}
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div id="info">
+        <h3>Planta 3D: Estado Atual (As-Is)</h3>
+        <p>Parede direita alinhada: Gelo > Carnes > Roxa</p>
+    </div>
+    
+    <div class="legend">
+        <div><strong style="margin-bottom: 5px; display: block;">Parede Direita (Nova Ordem):</strong></div>
+        <div><span class="color-box" style="background:#90cdf4;"></span> Freezer Gelo (Reduzido)</div>
+        <div><span class="color-box" style="background:#e53e3e;"></span> Freezer Carnes</div>
+        <div><span class="color-box" style="background:#805ad5;"></span> Prateleira Roxa</div>
+        <div style="margin-top: 10px;"><strong style="margin-bottom: 5px; display: block;">A Parede de Frio:</strong></div>
+        <div><span class="color-box" style="background:#ed8936;"></span> Câmara Fria Unificada</div>
+        <div><span class="color-box" style="background:#b83280;"></span> Refrigerador (Rosa)</div>
+        <div style="margin-top: 10px;"><strong style="margin-bottom: 5px; display: block;">Estrutura:</strong></div>
+        <div><span class="color-box" style="background:rgba(66, 153, 225, 0.1);"></span> Área de Vendas</div>
+        <div><span class="color-box" style="background:#d2b48c;"></span> Banheiro (Bege)</div>
+        <div style="margin-top: 10px;"><strong style="margin-bottom: 5px; display: block;">Estoque (Fundos):</strong></div>
+        <div><span class="color-box" style="background:#63b3ed;"></span> Freezers Horizontais</div>
+        <div><span class="color-box" style="background:#718096;"></span> Caixas/Fardos soltos</div>
+        <div style="margin-top: 10px;"><strong style="margin-bottom: 5px; display: block;">Mobiliário (Frente/Esq):</strong></div>
+        <div><span class="color-box" style="background:#a0aec0;"></span> Caixa / <span class="color-box" style="background:#dd6b20;"></span> Balcão 1</div>
+        <div><span class="color-box" style="background:#f6e05e;"></span> Prat. Amarela</div>
+        <div><span class="color-box" style="background:#4fd1c5;"></span> Prat. Suspensa (Esq)</div>
+    </div>
+
+    <script>
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xe2e8f0);
+        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        // Focando na parede direita recém-arrumada
+        camera.position.set(16, 20, 18); 
+        controls.target.set(13.5, 0, 7);  
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        scene.add(ambientLight);
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.4);
+        dirLight.position.set(10, 20, 15);
+        scene.add(dirLight);
+
+        const gridHelper = new THREE.GridHelper(20, 20, 0xa0aec0, 0xcbd5e0);
+        gridHelper.position.set(7.5, -0.01, 5);
+        scene.add(gridHelper);
+
+        // A sua função avançada com baseY mantida intacta
+        function construirVolume(x, z, largX, profZ, altura, corHex, opacidade = 1.0, baseY = 0) {
+            const geometry = new THREE.BoxGeometry(largX, altura, profZ);
+            const material = new THREE.MeshLambertMaterial({ 
+                color: corHex, 
+                transparent: opacidade < 1.0, 
+                opacity: opacidade 
+            });
+            const bloco = new THREE.Mesh(geometry, material);
+            // Elevação baseada no parâmetro baseY
+            bloco.position.set(x + largX/2, baseY + altura/2, z + profZ/2);
+            
+            const edges = new THREE.EdgesGeometry(geometry);
+            const linhas = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x1a202c, linewidth: 1 }));
+            linhas.position.copy(bloco.position);
+            
+            scene.add(bloco);
+            scene.add(linhas);
+        }
+
+        // --- 1. ESTRUTURA DO PRÉDIO ---
+        construirVolume(0, 5, 14.5, 7.0, 3.0, 0x4299e1, 0.05); // Area de vendas ampliada
+        construirVolume(14.5, 0, 1.5, 12.0, 3.0, 0x48bb78, 0.3); // Passagem/corredor
+        construirVolume(9.5, 0, 4, 2, 3.0, 0xd2b48c, 0.6); // Banheiro
+        
+        // --- A LINHA DE FRIO ---
+        construirVolume(0, 3.0, 4.5, 3.5, 2.8, 0xed8936); // Camara fria
+        construirVolume(4.5, 5.0, 7.0, 1.5, 2.2, 0xb83280); // Refrigerador rosa
+
+        // --- 2. PAREDE DIREITA (A ORDEM CORRIGIDA) ---
+        // Todos alinhados perfeitamente em X = 13.5
+        // 1º: Freezer Vertical de Gelo (reduzido 1/3 na profundidade)
+        construirVolume(13.5, 5.0, 1.0, 1.35, 2.55, 0x90cdf4); 
+        // 2º: Freezer de Carnes (afastado, começa onde o de gelo termina)
+        construirVolume(13.5, 6.35, 1.0, 2.0, 2.0, 0xe53e3e); 
+        // 3º: Prateleira Roxa (diminuída para encaixar no espaço restante)
+        construirVolume(13.5, 8.35, 1.0, 3.15, 2.0, 0x805ad5); 
+
+        // --- 3. ESTOQUE BAGUNÇADO E PASSAGEM ---
+        construirVolume(13.5, 3.5, 1.0, 1.5, 1.0, 0x63b3ed); // Freezer horizontal direito
+        construirVolume(10.5, 4.0, 1.5, 1.0, 1.0, 0x63b3ed); // Freezer horizontal esquerdo (Garante passagem 1,5m)
+        
+        construirVolume(0.5, 0.5, 3.0, 2.0, 0.1, 0x4a5568);
+        construirVolume(4.0, 0.2, 2.5, 2.5, 0.1, 0x4a5568);
+        construirVolume(7.0, 1.0, 2.0, 1.5, 0.1, 0x4a5568);
+        
+        construirVolume(1.0, 0.5, 1.0, 1.0, 1.2, 0x718096);
+        construirVolume(2.2, 0.8, 0.8, 1.2, 0.8, 0x718096);
+        construirVolume(4.5, 0.2, 1.5, 0.8, 1.5, 0x718096);
+        construirVolume(6.5, 1.5, 1.2, 1.0, 0.5, 0x718096);
+        construirVolume(5.0, 2.0, 0.8, 0.8, 0.4, 0x718096);
+        construirVolume(7.5, 0.5, 1.5, 1.0, 0.9, 0x718096);
+
+        // --- 4. MOBILIÁRIO ESQUERDO E BARRICADA (Seu código avançado) ---
+        construirVolume(0, 10.55, 1.0, 1.2, 1.0, 0x68d391); // Freezer verde-agua do canto
+        
+        // Prateleiras Suspensas
+        construirVolume(0, 6.55, 0.35, 5.2, 1.25, 0x4fd1c5, 0.18, 1.2); // Fundo da prateleira suspensa
+        construirVolume(0, 6.55, 0.5, 5.2, 0.08, 0x4fd1c5, 1.0, 1.2);
+        construirVolume(0, 6.55, 0.5, 5.2, 0.08, 0x4fd1c5, 1.0, 1.6);
+        construirVolume(0, 6.55, 0.5, 5.2, 0.08, 0x4fd1c5, 1.0, 2.0);
+        construirVolume(0, 6.55, 0.5, 5.2, 0.08, 0x4fd1c5, 1.0, 2.4);
+        construirVolume(0, 6.55, 0.5, 0.07, 1.25, 0x4fd1c5, 1.0, 1.2);
+        construirVolume(0, 8.25, 0.5, 0.07, 1.25, 0x4fd1c5, 1.0, 1.2);
+        construirVolume(0, 9.95, 0.5, 0.07, 1.25, 0x4fd1c5, 1.0, 1.2);
+        construirVolume(0, 11.68, 0.5, 0.07, 1.25, 0x4fd1c5, 1.0, 1.2);
+        
+        construirVolume(0.45, 6.95, 1.0, 1.5, 1.0, 0x68d391); // Freezer interno quase colado a parede
+        
+        construirVolume(0, 9.0, 4.0, 1.0, 1.1, 0xa0aec0); // Caixa recuado
+        construirVolume(4.0, 9.0, 4.0, 1.0, 1.1, 0xdd6b20); // Balcao 1 junto ao caixa
+        
+        construirVolume(4.0, 11.05, 9.5, 0.4, 1.5, 0xf6e05e); // Prateleira amarela fina ate o roxo
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+</body>
+</html>
