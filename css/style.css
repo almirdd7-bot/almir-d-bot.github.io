@@ -1190,3 +1190,73 @@ nav a.active{
     }
 
 }
+/* =========================
+   CARDS EXPANSÍVEIS
+========================= */
+.card.expansivel {
+    cursor: pointer;
+    position: relative;
+    padding-bottom: 25px; /* Abre espaço para a setinha */
+}
+
+.card.expansivel::after {
+    content: '▼';
+    position: absolute;
+    bottom: 20px;
+    right: 30px;
+    color: var(--green);
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+.card.expansivel.ativo::after {
+    transform: rotate(180deg); /* Vira a setinha para cima */
+}
+
+.detalhe {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.4s ease;
+}
+
+.card.expansivel.ativo .detalhe {
+    max-height: 1200px; /* Aumentado para caber as matrizes SWOT e 5W2H */
+    opacity: 1;
+    margin-top: 15px;
+}
+
+/* Estilização das Tabelas de Ferramentas */
+.tabela-ferramenta {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 0.85rem;
+    color: #cccccc;
+}
+
+.tabela-ferramenta th, 
+.tabela-ferramenta td {
+    padding: 10px;
+    border: 1px solid rgba(31, 163, 71, 0.3); /* Borda verde bem suave */
+    text-align: left;
+    vertical-align: top;
+}
+
+.tabela-ferramenta th {
+    background-color: rgba(31, 163, 71, 0.1);
+    color: var(--green); /* Usa o verde padrão do seu site */
+    font-weight: 600;
+}
+
+.detalhe hr {
+    border: none;
+    border-top: 1px solid rgba(31, 163, 71, 0.2);
+    margin-bottom: 15px;
+}
+
+.detalhe p {
+    font-size: 0.9rem;
+    color: #cccccc;
+    line-height: 1.6;
+}
